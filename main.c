@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:39 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/05/29 18:02:02 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/05/29 22:52:35 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_character_map(char **map, int lines)
 		while ((map[i][j] != '\0') && map[i][j] != '\n')
 		{
 			if (map[i][j] == 'P')
-				count_p++; 
+				count_p++;
 			else if (map[i][j] == 'E')
 				count_e++;
 			else if (map[i][j] == 'C')
@@ -133,13 +133,17 @@ int	close_x(void *param)
 	return (0);
 }
 
-int	handle_key(int keycode, t_game *g)
+int	homer_control(int keycode, t_game *g)
 {
 	int	x;
+	int	old_x;
 	int	y;
+	int	old_y;
 
 	x = g->player_x;
+	old_x = g->player_x;
 	y = g->player_y;
+	old_y = g->player_y;
 	if ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] != '1')
 	{
 		g->player_y--;
@@ -174,12 +178,24 @@ int	handle_key(int keycode, t_game *g)
 	}
 	else
 		return (0);
-	if (((keycode == 100 || keycode == 65363) && g->map[y][x + 1] == 'E') || ((keycode == 97 || keycode == 65361) && g->map[y][x - 1] == 'E') || ((keycode == 115 || keycode == 65364) && g->map[y + 1][x] == 'E') || ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'E'))
+	if ((((keycode == 100 || keycode == 65363) && g->map[y][x + 1] == 'C') || ((keycode == 97 || keycode == 65361) && g->map[y][x - 1] == 'C') || ((keycode == 115 || keycode == 65364) && g->map[y + 1][x] == 'C') || ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'C')) && g->total_beers > 0)
+	{
+		g->total_beers--;
+		g->map[y][x] = '0';
+	}
+	if ((((keycode == 100 || keycode == 65363) && g->map[y][x + 1] == 'E') || ((keycode == 97 || keycode == 65361) && g->map[y][x - 1] == 'E') || ((keycode == 115 || keycode == 65364) && g->map[y + 1][x] == 'E') || ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'E')) && g->total_beers == 0)
 	{
 		free_map(g->map, y + 1);
 		exit(0);
 	}
-	mlx_put_image_to_window(g->mlx, g->win, g->img_cesped, x * g->img_w, y * g->img_h);
+	if (g->map[old_y][old_x] == 'E')
+	{
+		mlx_put_image_to_window(g->mlx, g->win, g->img_taberna_moe, old_x * g->img_w, old_y * g->img_h);
+	}
+	else
+	{
+		mlx_put_image_to_window(g->mlx, g->win, g->img_cesped, old_x * g->img_w, old_y * g->img_h);
+	}
 	mlx_put_image_to_window(g->mlx, g->win, g->img_homer, g->player_x * g->img_w, g->player_y * g->img_h);
 	return (0);
 }
@@ -197,7 +213,6 @@ int	main(int argc, char *argv[])
 	int		y;
 	int		img_w;
 	int		img_h;
-	int		count_c;
 	void	*mlx_ptr;
 	void	*win_ptr;
 	void	*img_arbusto;
@@ -239,9 +254,13 @@ int	main(int argc, char *argv[])
 		}
 		line_len = ft_strlen(line);
 		if (line[line_len - 1] == '\n')
+		{
 			line_len--;
+		}
 		if (i == 0)
+		{
 			map_width = line_len;
+		}
 		else if (line_len != map_width)
 		{
 			free(line);
@@ -275,10 +294,14 @@ int	main(int argc, char *argv[])
 	}
 	mlx_ptr = mlx_init();
 	if (mlx_ptr == NULL)
+	{
 		return (1);
-	win_ptr = mlx_new_window(mlx_ptr, map_width * 120, len_map * 120, "so_long");
+	}
+	win_ptr = mlx_new_window(mlx_ptr, map_width * 120, len_map * 120, "SO_LONG HOMER QUE NO HOMERO");
 	if (win_ptr == NULL)
+	{
 		return (1);
+	}
 	mlx_hook(win_ptr, 17, 0, close_x, NULL);
 	mlx_key_hook(win_ptr, close_esc, NULL);
 	img_homer = mlx_xpm_file_to_image(mlx_ptr, "./textures/homer.xpm", &img_w, &img_h);
@@ -298,9 +321,13 @@ int	main(int argc, char *argv[])
 		while (map[y][x] != '\0' && map[y][x] != '\n')
 		{
 			if (map[y][x] == '1')
+			{
 				mlx_put_image_to_window(mlx_ptr, win_ptr, img_arbusto, x * img_w, y * img_h);
+			}
 			else if (map[y][x] == '0')
+			{
 				mlx_put_image_to_window(mlx_ptr, win_ptr, img_cesped, x * img_w, y * img_h);
+			}
 			else if (map[y][x] == 'P')
 			{
 				mlx_put_image_to_window(mlx_ptr, win_ptr, img_homer, x * img_w, y * img_h);
@@ -308,22 +335,27 @@ int	main(int argc, char *argv[])
 				g.player_y = y;
 			}
 			else if (map[y][x] == 'C')
+			{
 				mlx_put_image_to_window(mlx_ptr, win_ptr, img_duff, x * img_w, y * img_h);
+			}
 			else if (map[y][x] == 'E')
+			{
 				mlx_put_image_to_window(mlx_ptr, win_ptr, img_taberna_moe, x * img_w, y * img_h);
+			}
 			x++;
 		}
 		y++;
 	}
-	count_c = count_beer(map, len_map);
+	g.total_beers = count_beer(map, len_map);
 	g.map = map;
 	g.mlx = mlx_ptr;
 	g.win = win_ptr;
 	g.img_cesped = img_cesped;
 	g.img_homer = img_homer;
+	g.img_taberna_moe = img_taberna_moe;
 	g.img_w = img_w;
 	g.img_h = img_h;
-	mlx_hook(win_ptr, 2, 1, handle_key, &g);
+	mlx_hook(win_ptr, 2, 1, homer_control, &g);
 	mlx_loop(mlx_ptr);
 	free_map(map, len_map);
 	return (0);
