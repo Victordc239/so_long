@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:39 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/05/29 22:52:35 by victor           ###   ########.fr       */
+/*   Updated: 2025/06/03 14:08:54 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,34 @@ int	check_character_map(char **map, int lines)
 		i++;
 	}
 	if (count_p != 1 || count_e != 1 || count_c < 1)
+		return (1);
+	return (0);
+}
+
+int	check_character_copy_map(char **copy_map, int lines)
+{
+	int	i;
+	int	j;
+	int	count_e;
+	int	count_c;
+
+	i = 0;
+	count_e = 0;
+	count_c = 0;
+	while (i < lines)
+	{
+		j = 0;
+		while ((copy_map[i][j] != '\0') && copy_map[i][j] != '\n')
+		{
+			if (copy_map[i][j] == 'E')
+				count_e++;
+			else if (copy_map[i][j] == 'C')
+				count_c++;
+			j++;
+		}
+		i++;
+	}
+	if (count_e > 0 || count_c > 0)
 		return (1);
 	return (0);
 }
@@ -178,7 +206,7 @@ int	homer_control(int keycode, t_game *g)
 	}
 	else
 		return (0);
-	if ((((keycode == 100 || keycode == 65363) && g->map[y][x + 1] == 'C') || ((keycode == 97 || keycode == 65361) && g->map[y][x - 1] == 'C') || ((keycode == 115 || keycode == 65364) && g->map[y + 1][x] == 'C') || ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'C')) && g->total_beers > 0)
+	if (g->map[y][x] == 'C')
 	{
 		g->total_beers--;
 		g->map[y][x] = '0';
@@ -190,27 +218,73 @@ int	homer_control(int keycode, t_game *g)
 	}
 	if (g->map[old_y][old_x] == 'E')
 	{
-		mlx_put_image_to_window(g->mlx, g->win, g->img_taberna_moe, old_x * g->img_w, old_y * g->img_h);
+		mlx_put_image_to_window(g->mlx, g->win, g->img_bar_moe, old_x * g->img_w, old_y * g->img_h);
 	}
 	else
 	{
 		mlx_put_image_to_window(g->mlx, g->win, g->img_cesped, old_x * g->img_w, old_y * g->img_h);
 	}
-	mlx_put_image_to_window(g->mlx, g->win, g->img_homer, g->player_x * g->img_w, g->player_y * g->img_h);
+	if (g->map[g->player_y][g->player_x] == 'E' && g->total_beers > 0)
+		mlx_put_image_to_window(g->mlx, g->win, g->img_bar_moe_homer, g->player_x * g->img_w, g->player_y * g->img_h);
+	else
+		mlx_put_image_to_window(g->mlx, g->win, g->img_homer, g->player_x * g->img_w, g->player_y * g->img_h);
 	return (0);
+}
+
+void	flood_fill(char **copy_map, int x, int y, int lines, int width)
+{
+	if (x >= 0 && y >= 0 && y < lines && x < width && copy_map[y][x] != '1' && copy_map[y][x] != 'F')
+	{
+		copy_map[y][x] = 'F';
+		flood_fill(copy_map, x + 1, y, lines, width);
+		flood_fill(copy_map, x - 1, y, lines, width);
+		flood_fill(copy_map, x, y + 1, lines, width);
+		flood_fill(copy_map, x, y - 1, lines, width);
+	}
+}
+
+char	**make_copy(char **map, int lines)
+{
+	int		i;
+	char	**copy_map;
+
+	copy_map = malloc(sizeof(char *) * (lines + 1));
+	if (!copy_map)
+		return (NULL);
+	i = 0;
+	while (i < lines)
+	{
+		copy_map[i] = ft_strdup(map[i]);
+		if (!copy_map[i])
+		{
+			while (i >= 0)
+			{
+				free(copy_map[i]);
+				i--;
+			}
+			free(copy_map);
+			return (NULL);
+		}
+		i++;
+	}
+	copy_map[lines] = NULL;
+	return (copy_map);
 }
 
 int	main(int argc, char *argv[])
 {
 	char	*line;
 	char	**map;
+	char	**copy_map;
 	int		fd;
 	int		len_map;
 	int		i;
 	int		map_width;
 	int		line_len;
 	int		x;
+	int		xx;
 	int		y;
+	int		yy;
 	int		img_w;
 	int		img_h;
 	void	*mlx_ptr;
@@ -219,7 +293,8 @@ int	main(int argc, char *argv[])
 	void	*img_cesped;
 	void	*img_homer;
 	void	*img_duff;
-	void	*img_taberna_moe;
+	void	*img_bar_moe;
+	void	*img_bar_moe_homer;
 	t_game	g;
 
 	i = 0;
@@ -239,7 +314,7 @@ int	main(int argc, char *argv[])
 	map = malloc(sizeof(char *) * (len_map + 1));
 	if (map == NULL)
 	{
-		write(1, "Error malloc\n", 14);
+		write(1, "Error\nmalloc\n", 14);
 		return (1);
 	}
 	while (i < len_map)
@@ -249,7 +324,7 @@ int	main(int argc, char *argv[])
 		{
 			free_map(map, i);
 			close(fd);
-			write(1, "Error lectura\n", 15);
+			write(1, "Error\nlectura\n", 15);
 			return (1);
 		}
 		line_len = ft_strlen(line);
@@ -266,7 +341,7 @@ int	main(int argc, char *argv[])
 			free(line);
 			free_map(map, i);
 			close(fd);
-			write(1, "Error Rectangulo\n", 18);
+			write(1, "Error\nRectangulo\n", 18);
 			return (1);
 		}
 		map[i] = line;
@@ -274,7 +349,7 @@ int	main(int argc, char *argv[])
 		{
 			free_map(map, i);
 			close(fd);
-			write(1, "Error Muro Lateral\n", 20);
+			write(1, "Error\nMuro Lateral\n", 20);
 			return (1);
 		}
 		i++;
@@ -282,19 +357,35 @@ int	main(int argc, char *argv[])
 	close(fd);
 	if (check_character_map(map, len_map) == 1)
 	{
+		write(1, "Error\ncaracteres\n", 18);
 		free_map(map, len_map);
-		write(1, "Error Caracteres\n", 18);
 		return (1);
 	}
-	if (is_wall_line(map[0]) == 0 || is_wall_line(map[len_map - 1]) == 0)
+	yy = 0;
+	while (yy < len_map)
 	{
-		free_map(map, i);
-		write(1, "Error Muro\n", 12);
-		return (1);
+		xx = 0;
+		while (map[yy][xx] != '\0' && map[yy][xx] != '\n' && g.player_x == 0 && g.player_y == 0)
+		{
+			if (map[yy][xx] == 'P')
+			{
+				g.player_x = xx;
+				g.player_y = yy;
+			}
+			xx++;
+		}
+		yy++;
 	}
 	mlx_ptr = mlx_init();
 	if (mlx_ptr == NULL)
 	{
+		return (1);
+	}
+	copy_map = make_copy(map, len_map);
+	flood_fill(copy_map, g.player_x, g.player_y, len_map, map_width);
+	if (check_character_copy_map(copy_map, len_map) == 1)
+	{
+		write(1, "Error\nmapa de error\n", 21);
 		return (1);
 	}
 	win_ptr = mlx_new_window(mlx_ptr, map_width * 120, len_map * 120, "SO_LONG HOMER QUE NO HOMERO");
@@ -308,10 +399,11 @@ int	main(int argc, char *argv[])
 	img_arbusto = mlx_xpm_file_to_image(mlx_ptr, "./textures/arbusto.xpm", &img_w, &img_h);
 	img_cesped = mlx_xpm_file_to_image(mlx_ptr, "./textures/cesped.xpm", &img_w, &img_h);
 	img_duff = mlx_xpm_file_to_image(mlx_ptr, "./textures/duff.xpm", &img_w, &img_h);
-	img_taberna_moe = mlx_xpm_file_to_image(mlx_ptr, "./textures/taberna_moe.xpm", &img_w, &img_h);
-	if (!img_arbusto || !img_cesped || !img_homer || !img_duff || !img_taberna_moe)
+	img_bar_moe = mlx_xpm_file_to_image(mlx_ptr, "./textures/bar_moe.xpm", &img_w, &img_h);
+	img_bar_moe_homer = mlx_xpm_file_to_image(mlx_ptr, "./textures/bar_moe_homer.xpm", &img_w, &img_h);
+	if (!img_arbusto || !img_cesped || !img_homer || !img_duff || !img_bar_moe || !img_bar_moe_homer)
 	{
-		write(1, "Error cargando imágenes\n", 25);
+		write(1, "Error\ncargando imágenes\n", 25);
 		return (1);
 	}
 	y = 0;
@@ -340,7 +432,7 @@ int	main(int argc, char *argv[])
 			}
 			else if (map[y][x] == 'E')
 			{
-				mlx_put_image_to_window(mlx_ptr, win_ptr, img_taberna_moe, x * img_w, y * img_h);
+				mlx_put_image_to_window(mlx_ptr, win_ptr, img_bar_moe, x * img_w, y * img_h);
 			}
 			x++;
 		}
@@ -352,7 +444,8 @@ int	main(int argc, char *argv[])
 	g.win = win_ptr;
 	g.img_cesped = img_cesped;
 	g.img_homer = img_homer;
-	g.img_taberna_moe = img_taberna_moe;
+	g.img_bar_moe = img_bar_moe;
+	g.img_bar_moe_homer = img_bar_moe_homer;
 	g.img_w = img_w;
 	g.img_h = img_h;
 	mlx_hook(win_ptr, 2, 1, homer_control, &g);

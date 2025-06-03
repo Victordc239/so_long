@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:00 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/05/29 22:52:25 by victor           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:55:55 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ typedef struct s_game
 	void	*win;
 	void	*img_homer;
 	void	*img_cesped;
-	void	*img_taberna_moe;
+	void	*img_bar_moe;
+	void	*img_bar_moe_homer;
 	int		img_w;
 	int		img_h;
 	int		player_x;
