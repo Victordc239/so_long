@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:39 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/04 13:50:25 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:13:05 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	homer_drink_bar_homer(int keycode, int old_x, int old_y, t_game *g)
 		g->total_beers--;
 		g->map[y][x] = '0';
 	}
-	if ((((keycode == 100 || keycode == 65363) && g->map[y][x + 1] == 'E') || ((keycode == 97  || keycode == 65361) && g->map[y][x - 1] == 'E') || ((keycode == 115 || keycode == 65364) && g->map[y + 1][x] == 'E') || ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'E')) && g->total_beers == 0)
+	if ((((keycode == 100 || keycode == 65363) && g->map[y][x + 1] == 'E') || ((keycode == 97 || keycode == 65361) && g->map[y][x - 1] == 'E') || ((keycode == 115 || keycode == 65364) && g->map[y + 1][x] == 'E') || ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'E')) && g->total_beers == 0)
 	{
 		free_map(g->map, y + 1);
 		exit(0);
@@ -110,6 +110,14 @@ void	homer_drink_bar_homer(int keycode, int old_x, int old_y, t_game *g)
 		mlx_put_image_to_window(g->mlx, g->win, g->img_bar_moe_homer, g->player_x * g->img_w, g->player_y * g->img_h);
 	else
 		mlx_put_image_to_window(g->mlx, g->win, g->img_homer, g->player_x * g->img_w, g->player_y * g->img_h);
+}
+
+void	print_movements(t_game *g)
+{
+	ft_putstr("Movements: ");
+	g->count_movements++;
+	ft_putnbr(g->count_movements);
+	ft_putstr("\n");
 }
 
 int	homer_control(int keycode, t_game *g)
@@ -126,34 +134,22 @@ int	homer_control(int keycode, t_game *g)
 	if ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] != '1')
 	{
 		g->player_y--;
-		ft_putstr("Movements: ");
-		g->count_movements++;
-		ft_putnbr(g->count_movements);
-		ft_putstr("\n");
+		print_movements(g);
 	}
 	else if ((keycode == 115 || keycode == 65364) && g->map[y + 1][x] != '1')
 	{
 		g->player_y++;
-		ft_putstr("Movements: ");
-		g->count_movements++;
-		ft_putnbr(g->count_movements);
-		ft_putstr("\n");
+		print_movements(g);
 	}
 	else if ((keycode == 97 || keycode == 65361) && g->map[y][x - 1] != '1')
 	{
 		g->player_x--;
-		ft_putstr("Movements: ");
-		g->count_movements++;
-		ft_putnbr(g->count_movements);
-		ft_putstr("\n");
+		print_movements(g);
 	}
 	else if ((keycode == 100 || keycode == 65363) && g->map[y][x + 1] != '1')
 	{
 		g->player_x++;
-		ft_putstr("Movements: ");
-		g->count_movements++;
-		ft_putnbr(g->count_movements);
-		ft_putstr("\n");
+		print_movements(g);
 	}
 	else
 		return (0);
@@ -230,7 +226,7 @@ void	put_images(t_game *g, int len_map)
 {
 	int		x;
 	int		y;
-	
+
 	y = 0;
 	while (y < len_map)
 	{
@@ -260,9 +256,9 @@ void	put_images(t_game *g, int len_map)
 int	load_map(int fd, char **map, int len_map, int *map_width)
 {
 	int		i;
-	char		*line;
+	char	*line;
 	int		i_line;
-	
+
 	i = 0;
 	while (i < len_map)
 	{
@@ -270,8 +266,7 @@ int	load_map(int fd, char **map, int len_map, int *map_width)
 		if (line == NULL)
 		{
 			free_map(map, i);
-			close(fd);
-			return (write(1, "Error\nlectura\n", 15), 1);
+			return (close(fd), write(1, "Error\nlectura\n", 15), 1);
 		}
 		i_line = ft_strlen(line);
 		if (line[i_line - 1] == '\n')
@@ -282,26 +277,19 @@ int	load_map(int fd, char **map, int len_map, int *map_width)
 		{
 			free(line);
 			free_map(map, i);
-			close(fd);
-			return (write(1, "Error\nRectangulo\n", 18), 1);
+			return (close(fd), write(1, "Error\nRectangulo\n", 18), 1);
 		}
 		map[i] = line;
 		if (line[0] != '1' || line[i_line - 1] != '1')
 		{
 			free_map(map, i);
-			close(fd);
-			return (write(1, "Error\nMuro Lateral\n", 20), 1);
+			return (close(fd), write(1, "Error\nMuro Lateral\n", 20), 1);
 		}
 		i++;
 	}
 	if (is_wall_line(map[len_map - 1]) != 1 || is_wall_line(map[0]) != 1)
-	{
-		free_map(map, i);
-		close(fd);
-		return (write(1, "Error\nMuros\n", 13), 1);
-	}
-	close(fd);
-	return (0);
+		return (free_map(map, i), close(fd), write(1, "Error\nMuros\n", 13), 1);
+	return (close(fd), 0);
 }
 
 int	main(int argc, char *argv[])
