@@ -6,7 +6,7 @@
 #    By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/26 13:49:21 by vdiez-cu          #+#    #+#              #
-#    Updated: 2025/06/04 10:52:49 by vdiez-cu         ###   ########.fr        #
+#    Updated: 2025/06/05 14:15:10 by vdiez-cu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,10 @@ SRCS		= get_next_line.c \
 			main.c \
 			get_next_line_utils.c \
 			so_long_utils.c \
-			comprobations.c
+			comprobations.c \
+			so_long.c \
+			window_images.c \
+			second_utils.c
 
 OBJS		= $(SRCS:.c=.o)
 

@@ -6,11 +6,13 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:54:46 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/05/29 17:38:32 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:02:44 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+#include "get_next_line.h"
+#include "./minilibx-linux/mlx.h"
 
 void	ft_putnbr(int n)
 {
@@ -51,4 +53,33 @@ void	ft_putstr(char *s)
 		ft_putchar(s[i]);
 		i++;
 	}
+}
+
+int	strlen_map(char *argv)
+{
+	char	*line;
+	int		fd;
+	int		count;
+
+	count = 0;
+	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		free(line);
+		count++;
+		line = get_next_line(fd);
+	}
+	close(fd);
+	return (count);
+}
+
+void	print_movements(t_game *g)
+{
+	ft_putstr("Movements: ");
+	g->count_movements++;
+	ft_putnbr(g->count_movements);
+	ft_putstr("\n");
 }
