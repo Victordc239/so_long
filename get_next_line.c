@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:40:43 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/05/29 14:49:55 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/06 13:44:42 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	add_c_to_line(char **line, char c)
 
 	char_buffer[0] = c;
 	char_buffer[1] = '\0';
+	if (*line == NULL)//
+		*line = ft_strdup("");//
 	temp = ft_strjoin(*line, char_buffer);
 	free(*line);
 	*line = temp;
@@ -73,7 +75,7 @@ char	*read_do_line(int fd, char *buffer, char **line, char **rest_buffer)
 		n_chars = read(fd, buffer, BUFFER_SIZE);
 	}
 	if ((ft_strlen(*line) == 0) || (n_chars == -1))
-		return (free(buffer), free(*line), NULL);
+		return (free(buffer), free(*line), NULL);	
 	return (free(buffer), *line);
 }
 
@@ -94,8 +96,14 @@ char	*get_next_line(int fd)
 			return (line);
 	}
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
-		return (NULL);
+
+	if (!buffer)//
+	{//
+		free(line); //
+		return (NULL);//
+	}//
+	//if (!buffer)
+	//	return (NULL);
 	return (read_do_line(fd, buffer, &line, &rest_buffer));
 }
 /*

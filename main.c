@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:39 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/05 16:44:10 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/06 12:42:07 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int	load_map(int fd, char **map, int len_map, int *map_width)
 				write(1, "Error\nRectangle\n", 17), 1);
 		map[i] = line;
 		if (line[0] != '1' || line[(ft_strlen(map[i])) - 2] != '1')
-		{
-			free_map(map, i);
-			return (close(fd), write(1, "Error\nSide Wall\n", 17), 1);
-		}
+			return (free(line), free_map(map, i), close(fd),
+				write(1, "Error\nSide Wall\n", 17), 1);
 		i++;
 	}
+	while ((line = get_next_line(fd)) != NULL)
+		free(line);
 	if (is_wall_line(map[len_map - 1]) != 1 || is_wall_line(map[0]) != 1)
 		return (free_map(map, i), close(fd), write(1, "Error\nWall\n", 12), 1);
 	return (close(fd), 0);

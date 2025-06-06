@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:41:07 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/04/09 14:14:19 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/06 13:43:15 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,25 @@ char	*ft_strdup(const char *s)
 	}
 	result[i] = '\0';
 	return (result);
+}
+
+char	*ft_strchr(const char *str, int c)
+{
+	size_t			i;
+	unsigned char	new_c;
+
+	if (c < 0 || c > 255)
+		new_c = (unsigned char)(c % 256);
+	else
+		new_c = (unsigned char)c;
+	i = 0;
+	while ((unsigned char)str[i] != '\0')
+	{
+		if ((unsigned char)str[i] == new_c)
+			return ((char *)&str[i]);
+		i++;
+	}
+	if (c == '\0' || new_c == '\0')
+		return ((char *)&str[i]);
+	return (NULL);
 }
