@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:54:46 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/06 11:33:46 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:52:20 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@
 
 void	ft_putnbr(int n)
 {
+	char	c;
 	if (n == -2147483648)
 	{
-		ft_putchar('-');
-		ft_putchar('2');
+		write(1, "-", 1);
+		write(1, "2", 1);
 		ft_putnbr(147483648);
 	}
 	else if (n < 0)
 	{
-		ft_putchar('-');
+		write(1, "-", 1);
 		ft_putnbr(-n);
 	}
 	else if (n >= 10)
@@ -34,13 +35,9 @@ void	ft_putnbr(int n)
 	}
 	else
 	{
-		ft_putchar(n + '0');
+		c = n + '0';
+		write(1, &c, 1);
 	}
-}
-
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
 }
 
 void	ft_putstr(char *s)
@@ -50,7 +47,7 @@ void	ft_putstr(char *s)
 	i = 0;
 	while (s[i] != '\0')
 	{
-		ft_putchar(s[i]);
+		write(1, &s[i], 1);
 		i++;
 	}
 }
@@ -82,4 +79,27 @@ void	print_movements(t_game *g)
 	g->count_movements++;
 	ft_putnbr(g->count_movements);
 	ft_putstr("\n");
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (((s1[i] != '\0') || (s2[i] != '\0')) && (s1[i] == s2[i]) && (i < n))
+	{
+		i++;
+	}
+	if (s1[i] == s2[i])
+	{
+		return (0);
+	}
+	else if (i < n)
+	{
+		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	else
+	{
+		return (0);
+	}
 }

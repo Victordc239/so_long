@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:00 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/06 13:06:53 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:32:49 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int		homer_control_aux(int keycode, t_game *g, int x, int y);
 int		count_beer(char **map, int lines);
 int		images(t_game *g);
 int		map_no_solution(t_game *g, int len_map);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	free_map(char **map, int lines);
 void	ft_putnbr(int n);
 void	ft_putchar(char c);
