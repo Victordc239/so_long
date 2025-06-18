@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   comprobations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:50:53 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/06 11:23:31 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:51:00 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ int	map_no_solution(t_game *g, int len_map)
 	flood_fill(copy_map, g->player_x, g->player_y, len_map);
 	if (check_character_flood_fill(copy_map, len_map) == 1)
 	{
-		free_map(g->map, len_map);
-		free_map(copy_map, len_map);
+		free_map_error(g->map, len_map);
+		free_map_error(copy_map, len_map);
 		return (write(1, "Error\nMap\n", 11), 1);
 	}
 	free_map(copy_map, len_map);

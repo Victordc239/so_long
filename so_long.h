@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:00 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/17 13:32:49 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:31:56 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int		images(t_game *g);
 int		map_no_solution(t_game *g, int len_map);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	free_map(char **map, int lines);
+void	free_map_error(char **map, int lines);
 void	ft_putnbr(int n);
 void	ft_putchar(char c);
 void	ft_putstr(char *s);

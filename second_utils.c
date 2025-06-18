@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   second_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:34:09 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/06 13:06:40 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:48:21 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,25 @@ void	free_map(char **map, int lines)
 	int	i;
 
 	i = 0;
-	while (i < lines)
+	while (i <= lines)
 	{
 		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+
+void	free_map_error(char **map, int lines)
+{
+	int i;
+
+	i = 0;
+	if (!map)
+		return;
+	while (i < lines)
+	{
+		if (map[i])
+			free(map[i]);
 		i++;
 	}
 	free(map);
@@ -30,6 +46,7 @@ void	free_map(char **map, int lines)
 char	**copy(char **map, int lines)
 {
 	int		i;
+	int		j;
 	char	**copy_map;
 
 	copy_map = malloc(sizeof(char *) * (lines + 1));
@@ -41,10 +58,11 @@ char	**copy(char **map, int lines)
 		copy_map[i] = ft_strdup(map[i]);
 		if (!copy_map[i])
 		{
-			while (i >= 0)
+			j = i - 1;
+			while (j >= 0)
 			{
-				free(copy_map[i]);
-				i--;
+				free(copy_map[j]);
+				j--;
 			}
 			free(copy_map);
 			return (NULL);
