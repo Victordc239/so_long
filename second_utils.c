@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:34:09 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 16:14:47 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:13:40 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,22 @@ void	free_map(char **map, int lines)
 	}
 	free(map);
 }
+
+/*void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	if (!map)
+		return ;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+	map = NULL;
+}*/
 
 void	free_map_error(char **map, int lines)
 {
