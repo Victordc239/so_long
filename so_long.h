@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:00 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 11:31:56 by victor           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:57:19 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ typedef struct s_game
 	int		count_c;
 	int		j;
 	int		i;
+	int		strlen_map_struct;
 	char	**map;
 }			t_game;
 
 int		is_wall_line(char *line);
+int		close_game(t_game *g);
 int		check_character_map(char **map, int lines, t_game *g);
 int		check_character_flood_fill(char **copy_map, int lines);
 int		strlen_map(char *argv);

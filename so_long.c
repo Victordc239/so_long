@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:50:51 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/06 13:07:29 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:55:44 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	homer_drink_bar_homer(int keycode, int old_x, int old_y, t_game *g)
 		|| ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'E'))
 		&& g->total_beers == 0)
 	{
-		free_map(g->map, y + 1);
-		exit(0);
+		//free_map(g->map, y + 1);
+		close_game(g);
 	}
 	exit_beer_homer(old_x, old_y, g);
 }

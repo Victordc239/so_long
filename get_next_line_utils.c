@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:41:07 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/17 14:08:41 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:50:22 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*ft_strdup(const char *s)
 	return (result);
 }
 
-char	*ft_strchr(const char *str, int c)
+/* char	*ft_strchr(const char *str, int c)
 {
 	size_t			i;
 	unsigned char	new_c;
@@ -92,3 +92,4 @@ char	*ft_strchr(const char *str, int c)
 		return ((char *)&str[i]);
 	return (NULL);
 }
+ */

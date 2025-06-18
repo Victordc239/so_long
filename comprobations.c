@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   comprobations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:50:53 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 11:51:00 by victor           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:08:39 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,32 @@ int	map_no_solution(t_game *g, int len_map)
 	}
 	free_map(copy_map, len_map);
 	return (0);
+}
+
+int	close_game(t_game *g)
+{
+	if (!g)
+		return (1);
+	if (g->img_homer)
+		mlx_destroy_image(g->mlx, g->img_homer);
+	if (g->img_cesped)
+		mlx_destroy_image(g->mlx, g->img_cesped);
+	if (g->img_arbusto)
+		mlx_destroy_image(g->mlx, g->img_arbusto);
+	if (g->img_duff)
+		mlx_destroy_image(g->mlx, g->img_duff);
+	if (g->img_bar_moe)
+		mlx_destroy_image(g->mlx, g->img_bar_moe);
+	if (g->img_bar_moe_homer)
+		mlx_destroy_image(g->mlx, g->img_bar_moe_homer);
+	if (g->map)
+		free_map(g->map, g->strlen_map_struct);
+	if (g->win)
+		mlx_destroy_window(g->mlx, g->win);
+	if (g->mlx)
+	{
+		mlx_destroy_display(g->mlx);
+		free(g->mlx);
+	}
+	exit(0);
 }

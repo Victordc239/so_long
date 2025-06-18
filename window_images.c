@@ -6,7 +6,7 @@
 /*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 13:49:48 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/06 13:06:31 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:20:10 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,24 @@
 
 int	close_esc(int keycode, void *param)
 {
-	(void)param;
+	t_game *g = (t_game *)param;
 	if (keycode == 65307)
-		exit(0);
+	{
+		if (g)
+            	close_game(g);
+		else
+			exit(0);
+	}
 	return (0);
 }
 
 int	close_x(void *param)
 {
-	(void)param;
-	exit(0);
+	t_game *g = (t_game *)param;
+	if (g)
+		close_game(g);
+	else
+		exit(0);
 	return (0);
 }
 

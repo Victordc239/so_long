@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:39 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 11:54:16 by victor           ###   ########.fr       */
+/*   Updated: 2025/06/18 16:56:54 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ int	process_line(char *line, int *map_width, int i)
 	if (i == 0)
 		*map_width = i_line;
 	else if (i_line != *map_width)
-		return (1);
+	{
+		return (1);	
+	}
 	return (0);
 }
 
@@ -61,6 +63,7 @@ int	load_comprobations_map(char *ruta, t_game *g, int *len_map, int *map_width)
 	int	fd;
 
 	*len_map = strlen_map(ruta);
+	g->strlen_map_struct = *len_map;
 	fd = open(ruta, O_RDONLY);
 	if (fd < 0 || *len_map < 1)
 		return (write(1, "Error\n", 6), 1);
@@ -94,8 +97,8 @@ int	run(t_game *g, int len_map, int map_width)
 		free_map(g->map, len_map);
 		return (write(1, "Error\nOpen Window\n", 19), 1);
 	}
-	mlx_hook(g->win, 17, 0, close_x, NULL);
-	mlx_key_hook(g->win, close_esc, NULL);
+	mlx_hook(g->win, 17, 0, close_x, g);
+	mlx_key_hook(g->win, close_esc, g);
 	if (images(g) == 1)
 	{
 		free_map(g->map, len_map);
