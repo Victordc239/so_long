@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   comprobations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 10:50:53 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 14:08:39 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/19 10:57:03 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ int	close_game(t_game *g)
 		return (1);
 	if (g->img_homer)
 		mlx_destroy_image(g->mlx, g->img_homer);
-	if (g->img_cesped)
-		mlx_destroy_image(g->mlx, g->img_cesped);
-	if (g->img_arbusto)
-		mlx_destroy_image(g->mlx, g->img_arbusto);
+	if (g->img_floor)
+		mlx_destroy_image(g->mlx, g->img_floor);
+	if (g->img_wall)
+		mlx_destroy_image(g->mlx, g->img_wall);
 	if (g->img_duff)
 		mlx_destroy_image(g->mlx, g->img_duff);
 	if (g->img_bar_moe)

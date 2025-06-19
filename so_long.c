@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:50:51 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 15:55:44 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/19 10:56:18 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	exit_beer_homer(int old_x, int old_y, t_game *g)
 	}
 	else
 	{
-		mlx_put_image_to_window(g->mlx, g->win, g->img_cesped,
+		mlx_put_image_to_window(g->mlx, g->win, g->img_floor,
 			old_x * g->img_w, old_y * g->img_h);
 	}
 	if (g->map[g->player_y][g->player_x] == 'E' && g->total_beers > 0)
@@ -81,7 +81,6 @@ void	homer_drink_bar_homer(int keycode, int old_x, int old_y, t_game *g)
 		|| ((keycode == 119 || keycode == 65362) && g->map[y - 1][x] == 'E'))
 		&& g->total_beers == 0)
 	{
-		//free_map(g->map, y + 1);
 		close_game(g);
 	}
 	exit_beer_homer(old_x, old_y, g);

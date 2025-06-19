@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window_images.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 13:49:48 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 14:20:10 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/19 10:57:27 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 
 int	close_esc(int keycode, void *param)
 {
-	t_game *g = (t_game *)param;
+	t_game	*g;
+
+	g = (t_game *)param;
 	if (keycode == 65307)
 	{
 		if (g)
-            	close_game(g);
+			close_game(g);
 		else
 			exit(0);
 	}
@@ -29,7 +31,9 @@ int	close_esc(int keycode, void *param)
 
 int	close_x(void *param)
 {
-	t_game *g = (t_game *)param;
+	t_game	*g;
+
+	g = (t_game *)param;
 	if (g)
 		close_game(g);
 	else
@@ -41,9 +45,9 @@ int	images(t_game *g)
 {
 	g->img_homer = mlx_xpm_file_to_image(g->mlx, "./textures/homer.xpm",
 			&g->img_w, &g->img_h);
-	g->img_arbusto = mlx_xpm_file_to_image(g->mlx, "./textures/arbusto.xpm",
+	g->img_wall = mlx_xpm_file_to_image(g->mlx, "./textures/arbusto.xpm",
 			&g->img_w, &g->img_h);
-	g->img_cesped = mlx_xpm_file_to_image(g->mlx, "./textures/cesped.xpm",
+	g->img_floor = mlx_xpm_file_to_image(g->mlx, "./textures/cesped.xpm",
 			&g->img_w, &g->img_h);
 	g->img_duff = mlx_xpm_file_to_image(g->mlx, "./textures/duff.xpm",
 			&g->img_w, &g->img_h);
@@ -51,7 +55,7 @@ int	images(t_game *g)
 			&g->img_w, &g->img_h);
 	g->img_bar_moe_homer = mlx_xpm_file_to_image(g->mlx,
 			"./textures/bar_moe_homer.xpm", &g->img_w, &g->img_h);
-	if (!g->img_homer || !g->img_arbusto || !g->img_cesped || !g->img_duff
+	if (!g->img_homer || !g->img_wall || !g->img_floor || !g->img_duff
 		|| !g->img_bar_moe || !g->img_bar_moe_homer)
 	{
 		return (1);
@@ -62,10 +66,10 @@ int	images(t_game *g)
 void	put_images_aux(t_game *g, int x, int y)
 {
 	if (g->map[y][x] == '1')
-		mlx_put_image_to_window(g->mlx, g->win, g->img_arbusto,
+		mlx_put_image_to_window(g->mlx, g->win, g->img_wall,
 			x * g->img_w, y * g->img_h);
 	else if (g->map[y][x] == '0')
-		mlx_put_image_to_window(g->mlx, g->win, g->img_cesped,
+		mlx_put_image_to_window(g->mlx, g->win, g->img_floor,
 			x * g->img_w, y * g->img_h);
 	else if (g->map[y][x] == 'C')
 		mlx_put_image_to_window(g->mlx, g->win, g->img_duff,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:00 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 16:57:19 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:14:34 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ typedef struct s_game
 	void	*mlx;
 	void	*win;
 	void	*img_homer;
-	void	*img_cesped;
+	void	*img_floor;
 	void	*img_bar_moe;
 	void	*img_bar_moe_homer;
-	void	*img_arbusto;
+	void	*img_wall;
 	void	*img_duff;
 	int		img_w;
 	int		img_h;
@@ -56,10 +56,14 @@ int		count_beer(char **map, int lines);
 int		images(t_game *g);
 int		map_no_solution(t_game *g, int len_map);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		process_line(char *line, int *map_width, int i);
+int		load_map(int fd, char **map, int len_map, int *map_width);
+int		run(t_game *g, int len_map, int map_width);
+int		load_comprobations_map(char *argv, t_game *g, int *len_map,
+			int *map_width);
 void	free_map(char **map, int lines);
 void	free_map_error(char **map, int lines);
 void	ft_putnbr(int n);
-void	ft_putchar(char c);
 void	ft_putstr(char *s);
 void	flood_fill(char **copy_map, int x, int y, int lines);
 void	found_homer(char **map, int lines, int *player_x, int *player_y);

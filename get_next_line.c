@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 12:40:43 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 16:57:32 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/19 10:17:01 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*read_do_line(int fd, char *buffer, char **line, char **rest_buffer)
 		n_chars = read(fd, buffer, BUFFER_SIZE);
 	}
 	if ((ft_strlen(*line) == 0) || (n_chars == -1))
-		return (free(buffer), free(*line), NULL);	
+		return (free(buffer), free(*line), NULL);
 	return (free(buffer), *line);
 }
 
@@ -96,14 +96,11 @@ char	*get_next_line(int fd)
 			return (line);
 	}
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-
 	if (!buffer)
 	{
-		free(line); 
+		free(line);
 		return (NULL);
 	}
-	//if (!buffer)
-	//	return (NULL);
 	return (read_do_line(fd, buffer, &line, &rest_buffer));
 }
 /*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:39 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 17:25:15 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:13:46 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	process_line(char *line, int *map_width, int i)
 		*map_width = i_line;
 	else if (i_line != *map_width)
 	{
-		return (1);	
+		return (1);
 	}
 	return (0);
 }
@@ -43,28 +43,27 @@ int	load_map(int fd, char **map, int len_map, int *map_width)
 			return (free_map(map, i), close(fd),
 				write(1, "Error\nread\n", 12), 1);
 		if (process_line(line, map_width, i) != 0)
-			return (free_map_error(map, i), free(line), close(fd),
+			return (free(line), free_map_error(map, i), close(fd),
 				write(1, "Error\nRectangle\n", 17), 1);
 		map[i] = line;
 		if (line[0] != '1' || line[(ft_strlen(map[i])) - 2] != '1')
-			return (free_map_error(map, i), free(line), close(fd),
+			return (free(line), free_map_error(map, i), close(fd),
 				write(1, "Error\nSide Wall\n", 17), 1);
 		i++;
 	}
-	while ((line = get_next_line(fd)) != NULL)
-		free(line);
 	if (is_wall_line(map[len_map - 1]) != 1 || is_wall_line(map[0]) != 1)
-		return (free_map_error(map, i), close(fd), write(1, "Error\nWall\n", 12), 1);
+		return (free_map_error(map, i), close(fd),
+			write(1, "Error\nWall\n", 12), 1);
 	return (close(fd), 0);
 }
 
-int	load_comprobations_map(char *ruta, t_game *g, int *len_map, int *map_width)
+int	load_comprobations_map(char *argv, t_game *g, int *len_map, int *map_width)
 {
 	int	fd;
 
-	*len_map = strlen_map(ruta);
+	*len_map = strlen_map(argv);
 	g->strlen_map_struct = *len_map;
-	fd = open(ruta, O_RDONLY);
+	fd = open(argv, O_RDONLY);
 	if (fd < 0 || *len_map < 1)
 		return (write(1, "Error\n", 6), 1);
 	g->map = malloc(sizeof(char *) * (*len_map + 1));

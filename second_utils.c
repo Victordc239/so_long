@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   second_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 11:34:09 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/18 17:13:40 by vdiez-cu         ###   ########.fr       */
+/*   Updated: 2025/06/19 10:43:01 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_map(char **map, int lines)
 
 	i = 0;
 	if (!map)
-		return;
+		return ;
 	while (i < lines)
 	{
 		free(map[i]);
@@ -47,11 +47,11 @@ void	free_map(char **map, int lines)
 
 void	free_map_error(char **map, int lines)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!map)
-		return;
+		return ;
 	while (i < lines)
 	{
 		if (map[i])
@@ -82,8 +82,7 @@ char	**copy(char **map, int lines)
 				free(copy_map[j]);
 				j--;
 			}
-			free(copy_map);
-			return (NULL);
+			return (free(copy_map), NULL);
 		}
 		i++;
 	}
