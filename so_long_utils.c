@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:54:46 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/19 10:23:42 by victor           ###   ########.fr       */
+/*   Updated: 2025/06/24 12:11:10 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ int	strlen_map(char *argv)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
+		if (line[0] == '\n' || line[0] == '\0')
+		{
+			free(line);
+			close(fd);
+			return (-1);
+		}
 		free(line);
 		count++;
 		line = get_next_line(fd);

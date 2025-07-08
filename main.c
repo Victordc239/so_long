@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: victor <victor@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vdiez-cu <vdiez-cu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:51:39 by vdiez-cu          #+#    #+#             */
-/*   Updated: 2025/06/19 11:13:46 by victor           ###   ########.fr       */
+/*   Updated: 2025/06/24 12:14:13 by vdiez-cu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	process_line(char *line, int *map_width, int i)
 	{
 		return (1);
 	}
+	if (ft_strlen(line) == 1 && line[0] == '\n')
+		return (1);
 	return (0);
 }
 
@@ -40,8 +42,10 @@ int	load_map(int fd, char **map, int len_map, int *map_width)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
-			return (free_map(map, i), close(fd),
-				write(1, "Error\nread\n", 12), 1);
+			return (free_map(map, i), close(fd), write(1, "Error\n", 7), 1);
+		if (line[0] == '\n' || line[0] == '\0')
+			return (free(line), free_map_error(map, i), close(fd),
+				write(1, "Error\nEmpty line\n", 18), 1);
 		if (process_line(line, map_width, i) != 0)
 			return (free(line), free_map_error(map, i), close(fd),
 				write(1, "Error\nRectangle\n", 17), 1);
